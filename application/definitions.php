@@ -11,3 +11,9 @@
 
 // Your applications name, used almost exclusively for visual
 $application['app name'] = "My Web App";
+
+// Define your application routes
+$router["/"] = array(
+  "DB" => TRUE,
+  "controller" => "index.php",
+);
