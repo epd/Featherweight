@@ -14,6 +14,6 @@ $application['app name'] = "My Web App";
 
 // Define your application routes
 $router["/"] = array(
-  "DB" => TRUE,
-  "controller" => "index.php",
+  "DB" => FALSE,
+  "view" => "home.php",
 );

@@ -18,9 +18,9 @@ class Router {
   protected $DB = FALSE;
 
   /**
-   * Holds the path to the view controller to be included.
+   * Holds the path to the view to be included.
    */
-  protected $controller;
+  protected $view;
 
   /**
    * Implementation of __construct().
@@ -30,7 +30,21 @@ class Router {
    */
   public function __construct() {
     global $router;
+    // Get our route information based on the current path
     $route = $this->getRoute($router);
+
+    // Print debug routing informationg
+    if (DEBUG) {
+      echo "<pre>";
+      echo $_SERVER['QUERY_STRING'] . "\n";
+      print_r($route);
+      echo "</pre>";
+    }
+    // Include our view to render to user
+    $this->view = "application/views/" . $route['view'];
+    require_once $this->view;
+
+    // Cleanup
     unset($router, $route);
   }
 
@@ -61,15 +75,18 @@ class Router {
    * This utility method gets the current URL path and finds a route for it.
    */
   protected function getRoute($router) {
-    if (isset($route = $router[])) {
+    if (empty($_SERVER['QUERY_STRING'])) {
+      $_SERVER['QUERY_STRING'] = "/";
+    }
+    $route = $router[$_SERVER['QUERY_STRING']];
+    if (isset($route)) {
       // If the file exists, route to this
-      if (file_exists($route['view'])) {
+      if (file_exists("application/views/" . $route['view'])) {
         return $route;
       }
     }
     // Else, 404
     return array(
-      "controller" => "index.php",
       "DB" => FALSE,
       "view" => "errors/404.php",
     );

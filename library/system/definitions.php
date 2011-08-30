@@ -23,8 +23,6 @@ $router = array(
   "/" => array(
     // No database connection necessary
     "DB" => false,
-    // We use our standard controller for this
-    "controller" => "index.php",
   ),
 );
 
