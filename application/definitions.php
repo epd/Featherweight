@@ -10,7 +10,7 @@
  */
 
 // Your applications name, used almost exclusively for visual
-$application['app name'] = "My Web App";
+$application['app name'] = "My Featherweight Web App";
 
 // Define your application routes
 $router["/"] = array(
