@@ -13,10 +13,16 @@
 $application['app name'] = "My Featherweight Web App";
 
 // Your database connection information
-$dsn = "mysql://username:password@localhost/db_name";
+$database = array(
+  'driver' => "mysql",
+  'hostname' => "localhost",
+  'username' => "username",
+  'password' => "password",
+  'database' => 'my_db',
+);
 
 // Define your application routes
 $router["/"] = array(
-  "DB" => FALSE,
+  "DB" => TRUE,
   "view" => "home.php",
 );

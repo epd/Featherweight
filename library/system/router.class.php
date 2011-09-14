@@ -32,20 +32,21 @@ class Router {
     global $router;
     // Get our route information based on the current path
     $route = $this->getRoute($router);
+    $this->DB = $route['DB'];
 
     // Print debug routing informationg
     if (DEBUG) {
       echo "<pre>";
       echo $_SERVER['QUERY_STRING'] . "\n";
       print_r($route);
-      echo "</pre>";
+      echo "</pre>\n";
     }
     // Include our view to render to user
     $this->view = "application/views/" . $route['view'];
     require_once $this->view;
 
     // Cleanup
-    unset($router, $route);
+    $router = $route = NULL;
   }
 
   /**

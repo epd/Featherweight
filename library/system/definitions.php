@@ -28,11 +28,12 @@ $router = array(
 
 // Default database connection settings
 // Later, this is used from the database abstraction layer
-$databases = array(
+$database = array(
   'driver' => NULL,
   'hostname' => NULL,
   'username' => NULL,
   'password' => NULL,
+  'database' => NULL,
   'port' => NULL,
   'socket' => NULL,
 );

@@ -8,7 +8,6 @@
  * This file acts as a traditional controller and routes all requests given to
  * the web application.
  */
-
 session_start();
 
 // Load our constants used through the app
@@ -30,6 +29,6 @@ $_ROUTER = new Router;
 
 // Load our database classes and methods (only if necessary)
 if ($_ROUTER->useDB()) {
-	require_once "library/db/database.class.php";
-	$_ROUTER->setDB(new DatabaseConnection($dsn));
+  require_once "library/db/database.class.php";
+  $_ROUTER->setDB(new DatabaseConnection());
 }
