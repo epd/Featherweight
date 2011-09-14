@@ -31,5 +31,5 @@ $_ROUTER = new Router;
 // Load our database classes and methods (only if necessary)
 if ($_ROUTER->useDB()) {
 	require_once "library/db/database.class.php";
-	$_ROUTER->setDB(new DatabaseConnection);
+	$_ROUTER->setDB(new DatabaseConnection($dsn));
 }
