@@ -9,6 +9,9 @@
  * database configuration to connect to.
  */
 
+// Turn on/off debug mode
+$debug = TRUE;
+
 // Your applications name, used almost exclusively for visual
 $application['app name'] = "My Featherweight Web App";
 

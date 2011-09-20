@@ -21,9 +21,17 @@ class DatabaseConnection {
 
     // If DEBUG, print out or DSN for connection verification
     if (DEBUG == true) {
+      // Save existing password and mask it for debug information
+      $password = $database['password'];
+      $database['password'] = "******** <i>(hidden)</i>";
+
       echo "<pre>";
       print_r($database);
       echo "</pre>\n";
+
+      // Reset password to original value
+      $database['password'] = $password;
+      unset($password);
     }
 
     // Connect to our database via the specified driver

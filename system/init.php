@@ -10,7 +10,7 @@
  */
 define("APP_NAME", $application['app name']);
 define("BASE_PATH", $application['base path']);
-define("DEBUG", TRUE);
+define("DEBUG", isset($debug) ? $debug : FALSE);
 
 // Cleanup
-unset($application);
+unset($application, $debug);

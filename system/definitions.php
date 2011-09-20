@@ -10,6 +10,9 @@
  * defaults that may be overridden in ../../application/definitions.php.
  */
 
+// Turn on/off debug mode
+$debug = FALSE;
+
 // Application-based settings
 $application = array(
   // Used for visual, becomes SITE_NAME
