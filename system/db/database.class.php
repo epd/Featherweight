@@ -47,7 +47,7 @@ class DatabaseConnection {
   protected function loadDriver($database) {
     // Our driver class file to include
     $driver = strtolower($database['driver']);
-    $inc = "library/db/drivers/" . $driver . ".class.php";
+    $inc = "system/db/drivers/" . $driver . ".class.php";
 
     // If this does not exist, throw an exception
     if (!file_exists($inc)) {

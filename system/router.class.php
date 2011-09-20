@@ -42,7 +42,7 @@ class Router {
       echo "</pre>\n";
     }
     // Include our view to render to user
-    $this->view = "application/views/" . $route['view'];
+    $this->view = "views/" . $route['view'];
     require_once $this->view;
 
     // Cleanup
@@ -82,7 +82,7 @@ class Router {
     $route = $router[$_SERVER['QUERY_STRING']];
     if (isset($route)) {
       // If the file exists, route to this
-      if (file_exists("application/views/" . $route['view'])) {
+      if (file_exists("views/" . $route['view'])) {
         return $route;
       }
     }

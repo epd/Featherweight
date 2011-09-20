@@ -11,24 +11,24 @@
 session_start();
 
 // Load our constants used through the app
-require_once "library/system/definitions.php";
+require_once "system/definitions.php";
 
 // Load custom user definitions
-if (file_exists("application/definitions.php")) {
-  require_once "application/definitions.php";
+if (file_exists("definitions.php")) {
+  require_once "definitions.php";
 }
 
 // Parse our definitions into constants to use throughout web app
-require_once "library/system/init.php";
+require_once "system/init.php";
 
 // Load our core routing system
-require_once "library/system/router.class.php";
+require_once "system/router.class.php";
 
 // Global variable that loads defaults from definitions
 $_ROUTER = new Router;
 
 // Load our database classes and methods (only if necessary)
 if ($_ROUTER->useDB()) {
-  require_once "library/db/database.class.php";
+  require_once "system/db/database.class.php";
   $_ROUTER->setDB(new DatabaseConnection());
 }
