@@ -37,7 +37,7 @@ class Router {
     // Print debug routing informationg
     if (DEBUG) {
       echo "<pre>";
-      echo $_SERVER['QUERY_STRING'] . "\n";
+      echo $_SERVER['REQUEST_URI'] . "\n";
       print_r($route);
       echo "</pre>\n";
     }
@@ -76,10 +76,10 @@ class Router {
    * This utility method gets the current URL path and finds a route for it.
    */
   protected function getRoute($router) {
-    if (empty($_SERVER['QUERY_STRING'])) {
-      $_SERVER['QUERY_STRING'] = "/";
+    if (empty($_SERVER['REQUEST_URI'])) {
+      $_SERVER['REQUEST_URI'] = "/";
     }
-    $route = $router[$_SERVER['QUERY_STRING']];
+    $route = $router[$_SERVER['REQUEST_URI']];
     if (isset($route)) {
       // If the file exists, route to this
       if (file_exists("views/" . $route['view'])) {
