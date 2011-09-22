@@ -10,7 +10,7 @@
  */
 session_start();
 
-// Load our constants used through the app
+// Load our constants and configuration used through the app
 require_once "system/definitions.php";
 
 // Load custom user definitions
@@ -18,7 +18,7 @@ if (file_exists("definitions.php")) {
   require_once "definitions.php";
 }
 
-// Parse our definitions into constants to use throughout web app
+// Parse our definitions into constants and globals to use throughout web app
 require_once "system/init.php";
 
 // Load our core theming system
