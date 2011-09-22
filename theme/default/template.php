@@ -4,7 +4,8 @@
     <title><?php echo APP_NAME; ?></title>
   </head>
   <body>
-    {{content}}
+    {{default}}
+    <aside>{{sidebar}}</aside>
   </body>
 </html>
 

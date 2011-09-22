@@ -27,17 +27,18 @@ class Themer {
    */
   public function __construct($views, $theme, $template) {
     // Make arguments available as member variables
-    $this->views = is_array($views) ? $views : array("content" => $views);
+    $this->views = $views;
     $this->theme = $theme;
     $this->template = $template;
 
     // Debug print of information
     if (DEBUG) {
       echo "<pre>";
+      echo "View:\n";
       print_r($this->views);
-      echo "\n\n";
+      echo "\n\nTheme:\n";
       print_r($this->theme);
-      echo "\n\n";
+      echo "\n\nTemplate:\n";
       print_r($this->template);
       echo "</pre>\n";
     }
@@ -62,16 +63,16 @@ class Themer {
     ob_clean();
  
     // Clean our buffer and get our views
-    foreach ($this->views AS $rk => $view) {
-      include_once $view;
+    foreach ($this->views AS $region => $view_inc) {
+      include_once "views/" . $view_inc;
       $view = ob_get_contents();
       ob_clean();
-      $template = str_replace("{{" . $rk . "}}", $view, $template);
+      $template = str_replace("{{" . $region . "}}", $view, $template);
     }
 
     // End output buffering and replace regions with HTML
     ob_end_clean();
-    print $template;
+    print preg_replace("/{{([a-zA-Z0-9])+}}/i", "", $template);
   }
 }
 

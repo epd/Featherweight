@@ -18,9 +18,9 @@ class Router {
   protected $DB = FALSE;
 
   /**
-   * Holds the path to the view to be included.
+   * Holds the path to the views to be included.
    */
-  protected $view;
+  protected $views;
 
   /**
    * Holds the application theme to render this route with
@@ -52,8 +52,6 @@ class Router {
       echo "\nTheme: " . $this->theme;
       echo "</pre>\n";
     }
-    // The view to render to user
-    $this->view = "views/" . $route['view'];
 
     // Call our Themer class to output visual to the browser/user
     $display = new Themer($this->view, $this->theme, $this->template);
@@ -93,9 +91,12 @@ class Router {
       $_SERVER['REQUEST_URI'] = "/";
     }
     $route = $router[$_SERVER['REQUEST_URI']];
-    if (isset($route)) {
-      // If the file exists, route to this
-      if (file_exists("views/" . $route['view'])) {
+
+    // The view to render to user
+    if (isset($route) && isset($route['view']['default'])) {
+      $this->view = is_array($route['view']) ? $route['view'] : array("default" => $route['view']);
+
+      if (file_exists("views/" . $this->view['default'])) {
         // Set the current theme for this route
         if (isset($route['theme'])) {
           $this->theme = $route['theme'];
@@ -108,6 +109,7 @@ class Router {
       }
     }
     // Else, 404
+    $this->view = array("default" => "errors/404.php");
     return array(
       "DB" => FALSE,
       "view" => "errors/404.php",
