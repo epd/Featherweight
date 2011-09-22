@@ -23,6 +23,11 @@ class Router {
   protected $view;
 
   /**
+   * Holds the application theme to render this route with
+   */
+  protected $theme = THEME;
+
+  /**
    * Implementation of __construct().
    *
    * Constructs our Router object that holds inforation specific to the
@@ -39,6 +44,7 @@ class Router {
       echo "<pre>";
       echo $_SERVER['REQUEST_URI'] . "\n";
       print_r($route);
+      echo "\nTheme: " . $this->theme;
       echo "</pre>\n";
     }
     // Include our view to render to user
@@ -83,6 +89,10 @@ class Router {
     if (isset($route)) {
       // If the file exists, route to this
       if (file_exists("views/" . $route['view'])) {
+        // Set the current theme for this route
+        if (isset($route['theme'])) {
+          $this->theme = $route['theme'];
+        }
         return $route;
       }
     }

@@ -24,6 +24,9 @@ $database = array(
   'database' => 'my_db',
 );
 
+// Define your application's theme
+$theme = "default";
+
 // Define your application routes
 $router["/"] = array(
   "DB" => TRUE,
