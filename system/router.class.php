@@ -28,6 +28,11 @@ class Router {
   protected $theme = THEME;
 
   /**
+   * Holds the application's current template file
+   */
+  protected $template = TEMPLATE;
+
+  /**
    * Implementation of __construct().
    *
    * Constructs our Router object that holds inforation specific to the
@@ -47,9 +52,11 @@ class Router {
       echo "\nTheme: " . $this->theme;
       echo "</pre>\n";
     }
-    // Include our view to render to user
+    // The view to render to user
     $this->view = "views/" . $route['view'];
-    require_once $this->view;
+
+    // Call our Themer class to output visual to the browser/user
+    $display = new Themer($this->view, $this->theme, $this->template);
 
     // Cleanup
     $router = $route = NULL;
@@ -92,6 +99,10 @@ class Router {
         // Set the current theme for this route
         if (isset($route['theme'])) {
           $this->theme = $route['theme'];
+        }
+        // Set the current template for this route
+        if (isset($route['template'])) {
+          $this->template = $route['template'];
         }
         return $route;
       }

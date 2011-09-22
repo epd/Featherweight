@@ -21,6 +21,9 @@ if (file_exists("definitions.php")) {
 // Parse our definitions into constants to use throughout web app
 require_once "system/init.php";
 
+// Load our core theming system
+require_once "system/themer.class.php";
+
 // Load our core routing system
 require_once "system/router.class.php";
 
