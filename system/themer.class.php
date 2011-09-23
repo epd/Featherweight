@@ -33,12 +33,13 @@ class Themer {
 
     // Debug print of information
     if (DEBUG) {
-      echo "<pre>";
-      echo "View:\n";
+      echo '<pre class="debug">';
+      echo "<b>Request:</b> " . $_SERVER['REQUEST_URI'] . "\n";
+      echo "<b>View:</b>\n";
       print_r($this->views);
-      echo "\n\nTheme:\n";
+      echo "<b>Theme:</b> ";
       print_r($this->theme);
-      echo "\n\nTemplate:\n";
+      echo "\n<b>Template:</b> ";
       print_r($this->template);
       echo "</pre>\n";
     }

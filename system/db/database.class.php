@@ -25,7 +25,8 @@ class DatabaseConnection {
       $password = $database['password'];
       $database['password'] = "******** <i>(hidden)</i>";
 
-      echo "<pre>";
+      echo '<pre class="debug">';
+      echo "<b>Database:</b>\n";
       print_r($database);
       echo "</pre>\n";
 
@@ -40,7 +41,7 @@ class DatabaseConnection {
     }
     catch (Exception $e) {
       // An error occured
-      die("<i><b>" . __CLASS__ . "</b>: " . $e->getMessage() . "</i>");
+      die('<pre class="debug error"><i><b>' . __CLASS__ . '</b>: ' . $e->getMessage() . '</i></pre>');
     }
 
     // Cleanup

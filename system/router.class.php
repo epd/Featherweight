@@ -44,15 +44,6 @@ class Router {
     $route = $this->getRoute($router);
     $this->DB = $route['DB'];
 
-    // Print debug routing informationg
-    if (DEBUG) {
-      echo "<pre>";
-      echo $_SERVER['REQUEST_URI'] . "\n";
-      print_r($route);
-      echo "\nTheme: " . $this->theme;
-      echo "</pre>\n";
-    }
-
     // Call our Themer class to output visual to the browser/user
     $display = new Themer($this->view, $this->theme, $this->template);
 
