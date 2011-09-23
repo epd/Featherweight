@@ -45,7 +45,7 @@ class Router {
     $this->DB = $route['DB'];
 
     // Call our Themer class to output visual to the browser/user
-    $display = new Themer($this->view, $this->theme, $this->template);
+    $display = new Themer($this->views, $this->theme, $this->template);
 
     // Cleanup
     $router = $route = NULL;
@@ -89,9 +89,11 @@ class Router {
     $query = array();
 
     // Grab our view, or the "next-best-thing"
+    $path = "";
+    $found = FALSE;
     while (!empty($params)) {
       $path = "/" . implode("/", $params);
-      $route = $router[$path];
+      $route = isset($router[$path]) ? $router[$path] : NULL;
 
       if (DEBUG) {
         echo '<pre class="debug">';
@@ -101,7 +103,9 @@ class Router {
       // The view to render to user
       if (isset($route) && isset($route['view']['default'])) {
         $route['view'] = is_array($route['view']) ? $route['view'] : array("default" => $route['view']);
-        if (file_exists("views/" . $this->view['default'])) {
+        if (file_exists("views/" . $route['view']['default'])) {
+          // We've got our view!
+          $found = TRUE;
           break;
         }
       }
@@ -116,12 +120,22 @@ class Router {
       echo "</pre>";
     }
 
-    // 404 on empty path
+    // If route not found, check our root route, else 404
     if (empty($params)) {
-      $route = array(
-        "DB" => FALSE,
-        "view" => array("default" => "errors/404.php"),
-      );
+      $route = $router["/"];
+      if (isset($route) && isset($route['view']['default'])) {
+        $route['view'] = is_array($route['view']) ? $route['view'] : array("default" => $route['view']);
+        if (file_exists("views/" . $route['view']['default'])) {
+          // We've got our view!
+          $found = TRUE;
+        }
+      }
+      if (!$found) {
+        $route = array(
+          "DB" => FALSE,
+          "view" => array("default" => "errors/404.php"),
+        );
+      }
     }
 
     // Set the current theme for this route
@@ -133,7 +147,7 @@ class Router {
       $this->template = $route['template'];
     }
     // Set the current view for this route
-    $this->view = $route['view'];
+    $this->views = $route['view'];
 
     return $route;
   }
