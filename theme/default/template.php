@@ -5,8 +5,7 @@
     <link rel="stylesheet" href="<?php echo APP_CSS; ?>/style.css" />
   </head>
   <body>
-    {{default}}
-    <aside>{{sidebar}}</aside>
+  {{default}}
   </body>
 </html>
 
