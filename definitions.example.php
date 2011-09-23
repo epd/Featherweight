@@ -31,4 +31,11 @@ $theme = "default";
 $router["/"] = array(
   "DB" => TRUE,
   "view" => "home.php",
+/*
+  "view" => array(
+	'default' => 'home.php',
+	'another-region' => 'somedir/someview.php',
+  ),
+  'template' => 'template.php',
+*/
 );
