@@ -81,29 +81,78 @@ class Router {
     if (empty($_SERVER['REQUEST_URI'])) {
       $_SERVER['REQUEST_URI'] = "/";
     }
-    $route = $router[$_SERVER['REQUEST_URI']];
 
-    // The view to render to user
-    if (isset($route) && isset($route['view']['default'])) {
-      $this->view = is_array($route['view']) ? $route['view'] : array("default" => $route['view']);
+    // Our parameters, also cleaned for empty array values
+    $params = $this->getRequestURI();
 
-      if (file_exists("views/" . $this->view['default'])) {
-        // Set the current theme for this route
-        if (isset($route['theme'])) {
-          $this->theme = $route['theme'];
+    // Our query variables, similar to query string: ?property=value&propery2=value2
+    $query = array();
+
+    // Grab our view, or the "next-best-thing"
+    while (!empty($params)) {
+      $path = "/" . implode("/", $params);
+      $route = $router[$path];
+
+      if (DEBUG) {
+        echo '<pre class="debug">';
+        echo "<b>Trying path:</b> " . $path;
+        echo "</pre>";
+      }
+      // The view to render to user
+      if (isset($route) && isset($route['view']['default'])) {
+        $route['view'] = is_array($route['view']) ? $route['view'] : array("default" => $route['view']);
+        if (file_exists("views/" . $this->view['default'])) {
+          break;
         }
-        // Set the current template for this route
-        if (isset($route['template'])) {
-          $this->template = $route['template'];
-        }
-        return $route;
+      }
+      array_push($query, array_pop($params));
+    }
+    krsort($query);
+
+    if (DEBUG) {
+      echo '<pre class="debug">';
+      echo "<b>Query variables:</b>\n";
+      print_r($query);
+      echo "</pre>";
+    }
+
+    // 404 on empty path
+    if (empty($params)) {
+      $route = array(
+        "DB" => FALSE,
+        "view" => array("default" => "errors/404.php"),
+      );
+    }
+
+    // Set the current theme for this route
+    if (isset($route['theme'])) {
+      $this->theme = $route['theme'];
+    }
+    // Set the current template for this route
+    if (isset($route['template'])) {
+      $this->template = $route['template'];
+    }
+    // Set the current view for this route
+    $this->view = $route['view'];
+
+    return $route;
+  }
+
+  /**
+   * Implementation of getRequestURI().
+   *
+   * This method takes the server's REQUEST_URI global and splits it up into
+   * segments. It then removes all null/invalid chunks and returns the
+   * parameters for additional routing.
+   */
+  protected function getRequestURI() {
+    $request_params = explode("/", $_SERVER['REQUEST_URI']);
+    $params = array();
+    foreach ($request_params AS $rp) {
+      if (preg_match("/^([a-zA-Z0-9-_]+)$/", $rp)) {
+        array_push($params, $rp);
       }
     }
-    // Else, 404
-    $this->view = array("default" => "errors/404.php");
-    return array(
-      "DB" => FALSE,
-      "view" => "errors/404.php",
-    );
+    return $params;
   }
 }
