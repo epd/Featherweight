@@ -13,6 +13,11 @@ class Themer {
   protected $views;
 
   /**
+   * Holds our preloader file names
+   */
+  protected $preload;
+
+  /**
    * Holds our current theme name
    */
   protected $theme = THEME;
@@ -25,9 +30,10 @@ class Themer {
   /**
    * Construct our theme!
    */
-  public function __construct($views, $theme, $template) {
+  public function __construct($views, $preload, $theme, $template) {
     // Make arguments available as member variables
     $this->views = $views;
+    $this->preload = $preload;
     $this->theme = $theme;
     $this->template = $template;
 
@@ -37,6 +43,8 @@ class Themer {
       echo "<b>Request:</b> " . $_SERVER['REQUEST_URI'] . "\n";
       echo "<b>View:</b>\n";
       print_r($this->views);
+      echo "<b>Preload:</b>\n";
+      print_r($this->preload);
       echo "<b>Theme:</b> ";
       print_r($this->theme);
       echo "\n<b>Template:</b> ";
@@ -62,7 +70,14 @@ class Themer {
     include_once "theme/" . $this->theme . "/" . $this->template;
     $template = ob_get_contents();
     ob_clean();
- 
+
+    // Include our view preloader files
+    if (!empty($this->preload)) {
+      foreach ($this->preload AS $load) {
+        include_once "preload/" . $load;
+      }
+    }
+
     // Clean our buffer and get our views
     foreach ($this->views AS $region => $view_inc) {
       include_once "views/" . $view_inc;

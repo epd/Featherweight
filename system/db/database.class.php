@@ -69,4 +69,10 @@ class DatabaseConnection {
     $class = $driver . "Database";
     return new $class($database);
   }
+
+  // Required methods for each driver
+  public function query($tables) {}
+  public function fields($fields) {}
+  public function conditions($conditions) {}
+  public function execute() {}
 }

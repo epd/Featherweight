@@ -23,6 +23,11 @@ class Router {
   protected $views;
 
   /**
+   * Holds the path to the preloader files to be included
+   */
+  protected $preload = array();
+
+  /**
    * Holds the application theme to render this route with
    */
   protected $theme = THEME;
@@ -41,11 +46,17 @@ class Router {
   public function __construct() {
     global $router;
     // Get our route information based on the current path
-    $route = $this->getRoute($router);
-    $this->DB = isset($route['DB']) ? $route['DB'] : FALSE;
+    try {
+      $route = $this->getRoute($router);
+      $this->DB = isset($route['DB']) ? $route['DB'] : FALSE;
 
-    // Call our Themer class to output visual to the browser/user
-    $display = new Themer($this->views, $this->theme, $this->template);
+      // Call our Themer class to output visual to the browser/user
+      $display = new Themer($this->views, $this->preload, $this->theme, $this->template);
+    }
+    catch (Exception $e) {
+      // An error occured
+      die('<pre class="debug error"><i><b>' . __CLASS__ . '</b>: ' . $e->getMessage() . '</i></pre>');
+    }
 
     // Cleanup
     $router = $route = NULL;
@@ -141,6 +152,19 @@ class Router {
     // Set the current theme for this route
     if (isset($route['theme'])) {
       $this->theme = $route['theme'];
+    }
+    // Set the current preloaders for this route
+    if (isset($route['preload'])) {
+      $route['preload'] = !is_array($route['preload']) ? array($route['preload']) : $route['preload'];
+      foreach ($route['preload'] AS $load) {
+        if (file_exists("preload/" . $load)) {
+          array_push($this->preload, $load);
+        }
+      }
+      // Warn the developer that no preloader is being included
+      if (DEBUG && empty($this->preload)) {
+        echo '<pre class="debug error"><i><b>Router:</b> No view preloader files are being included.</i></pre>';
+      }
     }
     // Set the current template for this route
     if (isset($route['template'])) {

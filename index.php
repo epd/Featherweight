@@ -35,3 +35,4 @@ if ($_ROUTER->useDB()) {
   require_once "system/db/database.class.php";
   $_ROUTER->setDB(new DatabaseConnection());
 }
+

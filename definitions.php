@@ -31,5 +31,6 @@ $theme = "default";
 $router["/"] = array(
   "DB" => TRUE,
   "view" => "index.php",
+  "preload" => "example.php",
 );
 
