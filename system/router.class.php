@@ -42,7 +42,7 @@ class Router {
     global $router;
     // Get our route information based on the current path
     $route = $this->getRoute($router);
-    $this->DB = $route['DB'];
+    $this->DB = isset($route['DB']) ? $route['DB'] : FALSE;
 
     // Call our Themer class to output visual to the browser/user
     $display = new Themer($this->views, $this->theme, $this->template);

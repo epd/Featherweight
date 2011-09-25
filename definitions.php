@@ -32,3 +32,4 @@ $router["/"] = array(
   "DB" => TRUE,
   "view" => "index.php",
 );
+
