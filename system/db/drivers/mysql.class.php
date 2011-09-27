@@ -64,7 +64,7 @@ class mysqlDatabase {
       echo '<pre class="debug error"><i><b>' . __CLASS__ . ':</b> Could not query database.</i></pre>' . "\n";
     }
     $results = array();
-    while ($row = mysql_fetch_assoc($result)) {
+    while ($row = @mysql_fetch_assoc($result)) {
       $results[] = $row;
     }
     if (DEBUG) {
