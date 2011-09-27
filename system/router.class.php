@@ -50,8 +50,12 @@ class Router {
       $route = $this->getRoute($router);
       $this->DB = isset($route['DB']) ? $route['DB'] : FALSE;
 
+      if ($this->DB) {
+        $this->setDB(new DatabaseConnection());
+      }
+
       // Call our Themer class to output visual to the browser/user
-      $display = new Themer($this->views, $this->preload, $this->theme, $this->template);
+      $display = new Themer($this->views, $this->preload, $this->theme, $this->template, $this->DB);
     }
     catch (Exception $e) {
       // An error occured

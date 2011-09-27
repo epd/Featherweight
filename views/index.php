@@ -4,7 +4,7 @@
 <h2>List of example information:</h2>
 <ul>
   <?php foreach ($examples AS $e): ?>
-  <li><?php echo $e['name']; ?></li>
+  <li><?php echo $e['title']; ?></li>
   <?php endforeach; ?>
 </ul>
 

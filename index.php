@@ -24,15 +24,12 @@ require_once "system/init.php";
 // Load our core theming system
 require_once "system/themer.class.php";
 
+// Load our core database connection system
+require_once "system/db/database.class.php";
+
 // Load our core routing system
 require_once "system/router.class.php";
 
 // Global variable that loads defaults from definitions
 $_ROUTER = new Router;
-
-// Load our database classes and methods (only if necessary)
-if ($_ROUTER->useDB()) {
-  require_once "system/db/database.class.php";
-  $_ROUTER->setDB(new DatabaseConnection());
-}
 

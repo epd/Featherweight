@@ -28,14 +28,20 @@ class Themer {
   protected $template = TEMPLATE;
 
   /**
+   * Holds our database connection
+   */
+  protected $db;
+
+  /**
    * Construct our theme!
    */
-  public function __construct($views, $preload, $theme, $template) {
+  public function __construct($views, $preload, $theme, $template, $db) {
     // Make arguments available as member variables
     $this->views = $views;
     $this->preload = $preload;
     $this->theme = $theme;
     $this->template = $template;
+    $this->db = $db->getDriver();
 
     // Debug print of information
     if (DEBUG) {
@@ -72,6 +78,8 @@ class Themer {
     ob_clean();
 
     // Include our view preloader files
+    global $db;
+    $db = $this->db;
     if (!empty($this->preload)) {
       foreach ($this->preload AS $load) {
         include_once "preload/" . $load;

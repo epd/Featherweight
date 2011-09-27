@@ -5,6 +5,10 @@
  *
  * Implementation of our Database class, providing sanitation and connection
  * features.
+ *
+ * NOTE: When extending this class with a new database driver, you must
+ * implementing query(), fields(), conditions(), and execute() in order to
+ * maintain a standard implementation.
  */
 class DatabaseConnection {
   // Holds our database connection resource
@@ -70,9 +74,12 @@ class DatabaseConnection {
     return new $class($database);
   }
 
-  // Required methods for each driver
-  public function query($tables) {}
-  public function fields($fields) {}
-  public function conditions($conditions) {}
-  public function execute() {}
+  /**
+   * Implementation of getDriver().
+   *
+   * Returns the instance of the database driver class.
+   */
+  public function getDriver() {
+    return $this->db;
+  }
 }
