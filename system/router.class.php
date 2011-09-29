@@ -11,31 +11,8 @@
  */
 
 class Router {
-  /**
-   * Boolean value (do we need a DB connection?) or holds the database
-   * configuration after initialization.
-   */
-  protected $DB = FALSE;
-
-  /**
-   * Holds the path to the views to be included.
-   */
-  protected $views;
-
-  /**
-   * Holds the path to the preloader files to be included
-   */
-  protected $preload = array();
-
-  /**
-   * Holds the application theme to render this route with
-   */
-  protected $theme = THEME;
-
-  /**
-   * Holds the application's current template file
-   */
-  protected $template = TEMPLATE;
+  // Our database object (PDO)
+  protected $pdo;
 
   /**
    * Implementation of __construct().
@@ -44,18 +21,25 @@ class Router {
    * current request.
    */
   public function __construct() {
-    global $router;
+    global $router, $pdo, $database;
     // Get our route information based on the current path
     try {
       $route = $this->getRoute($router);
-      $this->DB = isset($route['DB']) ? $route['DB'] : FALSE;
-
-      if ($this->DB) {
-        $this->setDB(new DatabaseConnection());
+      // Establish database connection, but do not keep recreating it
+      $pdo = NULL;
+      if ($route['DB'] && !($this->pdo instanceof PDO)) {
+        if (DEBUG) {
+          echo '<pre class="debug">Establishing database connection...</pre>' . "\n";
+        }
+        $dsn = $database['driver'] . ':host=' . $database['hostname'] . ';dbname=' . $database['database'];
+        $this->pdo = new PDO($dsn, $database['username'], $database['password']);
+      }
+      if ($route['DB']) {
+        $pdo = $this->pdo;
       }
 
       // Call our Themer class to output visual to the browser/user
-      $display = new Themer($this->views, $this->preload, $this->theme, $this->template, $this->DB);
+      $display = new Themer($route);
     }
     catch (Exception $e) {
       // An error occured
@@ -63,29 +47,8 @@ class Router {
     }
 
     // Cleanup
-    $router = $route = NULL;
+    $router = $database = $route = NULL;
   }
-
-  /**
-   * Implementation of useDB().
-   *
-   * Does this request need to use a database connection? Gets the protected
-   * variable and returns it.
-   */
-  public function useDB() {
-    return $this->DB;
-  }
-
-  /**
-   * Implementation of setDB().
-   *
-   * When a request confirms it needs a database connection, the 
-   * DatabaseConnection class uses this method to store the connection
-   * object.
-   */
-   public function setDB(DatabaseConnection $db) {
-     $this->DB = $db;
-   }
 
   /**
    * Implementation of getRoute().
@@ -154,28 +117,31 @@ class Router {
     }
 
     // Set the current theme for this route
-    if (isset($route['theme'])) {
-      $this->theme = $route['theme'];
-    }
+    $route['theme'] = isset($route['theme']) ? $route['theme'] : 'default';
+
     // Set the current preloaders for this route
     if (isset($route['preload'])) {
-      $route['preload'] = !is_array($route['preload']) ? array($route['preload']) : $route['preload'];
-      foreach ($route['preload'] AS $load) {
+      $preloaders = !is_array($route['preload']) ? array($route['preload']) : $route['preload'];
+      $route['preload'] = array();
+      foreach ($preloaders AS $load) {
         if (file_exists("preload/" . $load)) {
-          array_push($this->preload, $load);
+          array_push($route['preload'], $load);
         }
       }
-      // Warn the developer that no preloader is being included
-      if (DEBUG && empty($this->preload)) {
-        echo '<pre class="debug error"><i><b>Router:</b> No view preloader files are being included.</i></pre>';
-      }
     }
+    else {
+      $route['preload'] = array();
+    }
+    // Warn the developer that no preloader is being included
+    if (DEBUG && empty($route['preload'])) {
+      echo '<pre class="debug error"><i><b>Router:</b> No view preloader files are being included.</i></pre>';
+    }
+ 
     // Set the current template for this route
-    if (isset($route['template'])) {
-      $this->template = $route['template'];
-    }
-    // Set the current view for this route
-    $this->views = $route['view'];
+    $route['template'] = isset($route['template']) ? $route['template'] : 'template.php';
+
+    // Set whether or not we want to use PDO
+    $route['DB'] = isset($route['DB']) ? $route['DB'] : FALSE;
 
     return $route;
   }

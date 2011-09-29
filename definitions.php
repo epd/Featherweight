@@ -33,4 +33,7 @@ $router["/"] = array(
   "view" => "index.php",
   "preload" => "example.php",
 );
+$router["/example"] = array(
+  "view" => "example.php",
+);
 

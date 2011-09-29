@@ -5,4 +5,5 @@
  *
  * This file will contain code to execute before the view is rendered.
  */
-$examples = $db->query("examples")->fields(array("title"))->execute();
+$examples = $pdo->query("SELECT title FROM examples");
+

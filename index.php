@@ -24,9 +24,6 @@ require_once "system/init.php";
 // Load our core theming system
 require_once "system/themer.class.php";
 
-// Load our core database connection system
-require_once "system/db/database.class.php";
-
 // Load our core routing system
 require_once "system/router.class.php";
 

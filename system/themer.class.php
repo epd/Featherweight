@@ -8,53 +8,29 @@
 
 class Themer {
   /**
-   * Holds our views file names and regions
+   * Holds our route to access views, themes, and template
    */
-  protected $views;
-
-  /**
-   * Holds our preloader file names
-   */
-  protected $preload;
-
-  /**
-   * Holds our current theme name
-   */
-  protected $theme = THEME;
-
-  /**
-   * Holds our current template file
-   */
-  protected $template = TEMPLATE;
-
-  /**
-   * Holds our database connection
-   */
-  protected $db;
+  protected $route;
 
   /**
    * Construct our theme!
    */
-  public function __construct($views, $preload, $theme, $template, $db) {
-    // Make arguments available as member variables
-    $this->views = $views;
-    $this->preload = $preload;
-    $this->theme = $theme;
-    $this->template = $template;
-    $this->db = $db->getDriver();
+  public function __construct($route) {
+    $this->route = $route;
+    unset($route);
 
     // Debug print of information
     if (DEBUG) {
       echo '<pre class="debug">';
       echo "<b>Request:</b> " . $_SERVER['REQUEST_URI'] . "\n";
       echo "<b>View:</b>\n";
-      print_r($this->views);
+      print_r($this->route['view']);
       echo "<b>Preload:</b>\n";
-      print_r($this->preload);
+      print_r($this->route['preload']);
       echo "<b>Theme:</b> ";
-      print_r($this->theme);
+      print_r($this->route['theme']);
       echo "\n<b>Template:</b> ";
-      print_r($this->template);
+      print_r($this->route['template']);
       echo "</pre>\n";
     }
 
@@ -73,21 +49,22 @@ class Themer {
     ob_start();
 
     // Get our template file
-    include_once "theme/" . $this->theme . "/" . $this->template;
+    include_once "theme/" . $this->route['theme'] . "/" . $this->route['template'];
     $template = ob_get_contents();
     ob_clean();
 
+    // Make database accessible (if set in route)
+    global $pdo;
+
     // Include our view preloader files
-    global $db;
-    $db = $this->db;
-    if (!empty($this->preload)) {
-      foreach ($this->preload AS $load) {
-        include_once "preload/" . $load;
+    if (!empty($this->route['preload'])) {
+      foreach ($this->route['preload'] AS $preload) {
+        include_once "preload/" . $preload;
       }
     }
 
     // Clean our buffer and get our views
-    foreach ($this->views AS $region => $view_inc) {
+    foreach ($this->route['view'] AS $region => $view_inc) {
       include_once "views/" . $view_inc;
       $view = ob_get_contents();
       ob_clean();
