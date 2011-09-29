@@ -28,10 +28,12 @@ class Router {
       // Establish database connection, but do not keep recreating it
       $pdo = NULL;
       if ($route['DB'] && !($this->pdo instanceof PDO)) {
+        $dsn = $database['driver'] . ':host=' . $database['hostname'] . ';dbname=' . $database['database'] . (!empty($database['socket']) ? ';unix_socket=' . $database['socket'] : '');
         if (DEBUG) {
-          echo '<pre class="debug">Establishing database connection...</pre>' . "\n";
-        }
-        $dsn = $database['driver'] . ':host=' . $database['hostname'] . ';dbname=' . $database['database'];
+          echo '<pre class="debug">Establishing database connection...';
+          echo "\n<b>DSN:</b> " . $dsn . "\n";
+          echo '</pre>' . "\n";
+        } 
         $this->pdo = new PDO($dsn, $database['username'], $database['password']);
       }
       if ($route['DB']) {

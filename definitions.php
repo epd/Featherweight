@@ -22,6 +22,7 @@ $database = array(
   'username' => $_SERVER['db_username'],
   'password' => $_SERVER['db_password'],
   'database' => $_SERVER['db_database'],
+  'socket' => $_SERVER['db_socket'],
 );
 
 // Define your application's main theme
