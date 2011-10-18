@@ -15,6 +15,9 @@ $debug = TRUE;
 // Your applications name, used almost exclusively for visual
 $application['app name'] = "My Featherweight Web App";
 
+// Security salt (Please change this!)
+$application['app salt'] = "FEATHERWEIGHT";
+
 // Your database connection information
 $database = array(
   'driver' => $_SERVER['db_driver'],

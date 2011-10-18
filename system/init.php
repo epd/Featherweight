@@ -26,6 +26,7 @@ if (isset($_SERVER['DEBUG'])) {
 // Our definitions
 define("APP_NAME", $application['app name']);
 define("BASE_PATH", $application['base path']);
+define("APP_SALT", $application['app salt']);
 define("DEBUG", isset($debug) ? $debug : FALSE);
 define("THEME", isset($theme) ? $theme : "default");
 define("TEMPLATE", isset($template) ? $template : "template.php");
