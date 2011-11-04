@@ -92,6 +92,7 @@ class Router {
       array_push($query, array_pop($params));
     }
     krsort($query);
+    $query = array_values($query);
 
     if (DEBUG) {
       echo '<pre class="debug">';
