@@ -56,6 +56,10 @@ class Themer {
     // Make database accessible (if set in route)
     global $pdo;
 
+    // Make our query string accessible
+    global $query;
+    $query = $this->route['query'];
+
     // Include our view preloader files
     if (!empty($this->route['preload'])) {
       foreach ($this->route['preload'] AS $preload) {

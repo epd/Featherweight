@@ -118,6 +118,9 @@ class Router {
       }
     }
 
+    // Add in our query variables to our route
+    $route['query'] = $query;
+
     // Set the current theme for this route
     $route['theme'] = isset($route['theme']) ? $route['theme'] : 'default';
 
