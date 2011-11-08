@@ -32,6 +32,7 @@ define("THEME", isset($theme) ? $theme : "default");
 define("TEMPLATE", isset($template) ? $template : "template.php");
 define("APP_CSS", "/theme/" . THEME . "/css");
 define("APP_JS", "/theme/" . THEME . "/js");
+define("APP_IMG", "/theme/" . THEME . "/img");
 
 // Cleanup
 unset($application, $theme, $debug);
