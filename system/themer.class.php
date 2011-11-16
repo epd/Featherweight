@@ -6,7 +6,7 @@
  * render the theme (template, css, js, view file, etc.) to the browser/user.
  */
 
-class Themer {
+class Themer extends stdClass {
   /**
    * Holds our route to access views, themes, and template
    */

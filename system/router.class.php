@@ -10,7 +10,7 @@
  * see if an available view or script is available for the current request.
  */
 
-class Router {
+class Router extends stdClass {
   // Our database object (PDO)
   protected $pdo;
 
