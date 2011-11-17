@@ -41,17 +41,3 @@ $router["/example"] = array(
   "view" => "example.php",
 );
 
-// Define data sets
-$data['KEY'] = array(
-  "table1" => array(
-    "field1",
-    "field2",
-    "field3",
-  ),
-  "conditions" => array(
-    "OR" => array(
-      "field1 = field2",
-      "field1 = 1",
-    ),
-  ),
-);
