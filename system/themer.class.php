@@ -48,17 +48,17 @@ class Themer extends stdClass {
     // Start output buffering
     ob_start();
 
-    // Get our template file
-    include_once "theme/" . $this->route['theme'] . "/" . $this->route['template'];
-    $template = ob_get_contents();
-    ob_clean();
-
     // Make database accessible (if set in route)
     global $pdo;
 
     // Make our query string accessible
     global $query;
     $query = $this->route['query'];
+
+    // Get our template file
+    include_once "theme/" . $this->route['theme'] . "/" . $this->route['template'];
+    $template = ob_get_contents();
+    ob_clean();
 
     // Include our view preloader files
     if (!empty($this->route['preload'])) {
