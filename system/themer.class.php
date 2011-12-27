@@ -55,6 +55,10 @@ class Themer extends stdClass {
     global $query;
     $query = $this->route['query'];
 
+    // Make our route accessible
+    global $route;
+    $route = $this->route;
+
     // Get our template file
     include_once "theme/" . $this->route['theme'] . "/" . $this->route['template'];
     $template = ob_get_contents();
